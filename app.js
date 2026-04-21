@@ -138,6 +138,12 @@ app.all("*", (req, res, next) => {
 })
 app.use((err, req, res, next) => {
     let {statusCode=500, message="something went wrong"} = err;
+    
+    // FIX: Set default local variables so the navbar/flash don't crash the error page
+    res.locals.currUser = req.user || null;
+    res.locals.success = "";
+    res.locals.error = "";
+
     //res.send("something went wrong!");
     //res.status(statusCode).send(message);
     res.status(statusCode).render("error.ejs",{ message });
